@@ -39,13 +39,23 @@ if __name__ == '__main__':
                         right_ptr -= 1
                 index_value_pairs.append((left_ptr, left_value))
                 index_value_pairs.append((right_ptr, right_value))
+                leftmost_index, leftmost_value = len(line) - 1, 0
+                rightmost_index, rightmost_value = 0, 0
                 for item, value in string_representation_of_digits.items():
                     substring_index = line.find(item)
-                    rsubstring_index = line.rfind(item)
+                    reverse_substring_index = line.rfind(item)
                     if substring_index != -1:
-                        index_value_pairs.append((substring_index, value))
-                    if rsubstring_index != -1:
-                        index_value_pairs.append((rsubstring_index, value))
+                        if substring_index < leftmost_index:
+                            leftmost_index = substring_index
+                            leftmost_value = value
+                    if reverse_substring_index != -1:
+                        if reverse_substring_index > rightmost_index:
+                            rightmost_index = reverse_substring_index
+                            rightmost_value = value
+                if leftmost_value != 0:
+                    index_value_pairs.append((leftmost_index, leftmost_value))
+                if rightmost_value != 0:
+                    index_value_pairs.append((rightmost_index, rightmost_value))
                 index_value_pairs.sort()
                 num = index_value_pairs[0][1] * 10 + index_value_pairs[-1][1]
                 nums.append(num)
