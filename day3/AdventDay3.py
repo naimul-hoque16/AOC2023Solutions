@@ -4,6 +4,8 @@ if __name__ == '__main__':
         sum = 0
         nums = []
         symbol_coordinates = {}
+        star_coordinates = []
+        gear_ratios = {}
         while True:
             line = fd.readline()
             if not line:
@@ -22,6 +24,8 @@ if __name__ == '__main__':
                     num_ends = start_x - 1
                     nums.append((int(''.join(tmp)), [num_starts, num_ends], y))
                 elif line[start_x] != '.':
+                    if line[start_x] == '*':
+                        star_coordinates.append((start_x, y))
                     if not symbol_coordinates.get(y):
                         symbol_coordinates[y] = []
                     symbol_coordinates[y].append(start_x)
@@ -37,9 +41,17 @@ if __name__ == '__main__':
                     test_x, test_y = coordinate
                     if symbol_coordinates.get(test_y):
                         if test_x in symbol_coordinates.get(test_y):
-                            print(f'Value {value} is adjacent to {(test_x, test_y)}')
                             sum += value
                             is_found = True
+                            if (test_x, test_y) in star_coordinates:
+                                if not gear_ratios.get((test_x, test_y)):
+                                    gear_ratios[(test_x, test_y)] = []
+                                gear_ratios[(test_x, test_y)].append(value)
                             break
                 if is_found:
                     break
+    gear_ratio_total = 0
+    for coordinate, ratio in gear_ratios.items():
+        if len(ratio) == 2:
+            gear_ratio_total += (ratio[0] * ratio[1])
+    print(gear_ratio_total)
